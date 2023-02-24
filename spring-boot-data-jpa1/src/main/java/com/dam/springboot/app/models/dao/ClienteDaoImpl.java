@@ -45,5 +45,4 @@ public class ClienteDaoImpl implements IClienteDao {
 	public void delete(Long id) {
 		em.remove(findOne(id));
 	}
-
 }
