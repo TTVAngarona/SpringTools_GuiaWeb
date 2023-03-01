@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <title>¡Buenas hermano!</title>
-    </head>
-    <body>
-        <h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name"></span>!</h1>
-        <p>Click <a th:href="@{/home}">here</a> to see a greeting.</p>
-        <p>Click <a th:href="@{/listar}">here</a> to see a the list.</p>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-            
-        </form>                  
-    </body>
+
+<head>
+	<title>¡Buenas hermano!</title>
+	<style>
+		div {
+			width: auto;
+			height: 100px;
+			background-color: red;
+			animation-name: example;
+			animation-duration: 1s;
+			animation-iteration-count: infinite;
+		}
+
+		@keyframes example {
+			0% {
+				background-color: red;
+			}
+
+			25% {
+				background-color: yellow;
+			}
+
+			50% {
+				background-color: blue;
+			}
+
+			100% {
+				background-color: green;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<h1 th:inline="text">Hello <span th:remove="tag" sec:authentication="name"></span>!</h1>
+	<p>Click <a th:href="@{/home}">here</a> to see a greeting.</p>
+	<p>Click <a th:href="@{/listar}">here</a> to see a the list.</p>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out" />
+	</form>
+	
+	<div>
+	<marquee direction="">
+	
+		<table align="center" width="100" border="1">
+			<tr>
+				<td>Esta tabla se desplaza , con todo el contenido de la tabla</td>
+			</tr>
+		</table>
+		
+	</marquee>
+	</div>
+</body>
+
 </html>
