@@ -1,4 +1,4 @@
-package com.web.GuiaWeb;
+package com.web.proyecto;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
