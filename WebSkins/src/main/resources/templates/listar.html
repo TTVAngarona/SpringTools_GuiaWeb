@@ -1,57 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8" />
-<title th:text="${titulo}">Skins, Skins y mas Skins</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
-<body>
 
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${titulo}">Skins, Skins y más Skins</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+
+<body>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" th:href="@{/armas/crear}">Crear armas</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/armas/crear}">Insertar armas</a>
+				</li>
 			</ul>
 		</div>
 	</nav>
 
-	<div class="container">
-		<h1
-			class="text-secondary border border-success border-top-0 border-left-0 border-right-0"
-			th:text="${titulo}"></h1>
-		<p><a th:href="@{/armas/crear}" class="btn btn-success btn-xs">crear arma</a></p>
+	<div class="container mt-5">
+		<h1 class="text-secondary border-bottom pb-2 mb-4" th:text="${titulo}"></h1>
 		<table class="table table-striped">
-			<thead class="bg-dark">
+			<thead class="bg-dark text-white">
 				<tr>
-					<th>id</th>
-					<th>nombre</th>
-					<th>apellido</th>
-					<th>email</th>
-					<th>fecha</th>
-					<th>editar</th>
-					<th>eliminar</th>
+					<th>Nombre del arma</th>
+					<th>Nombre de la skin</th>
+					<th>Precio de la skin</th>
+					<th>Detalles</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="arma: ${armas}">
-					<td th:text="${arma.id}"></td>
-					<td th:text="${arma.nombre_Arma}"></td>
+					<td><a th:href="@{/armas/detalles/{id}(id=${arma.id})}" th:text="${arma.nombre_Arma}"></a></td>
 					<td th:text="${arma.nombre_Skin}"></td>
 					<td th:text="${arma.precio}"></td>
-					
-					<td><a class="btn btn-primary btn-xs" th:href="@{/armas/editar/} + ${arma.id}" th:text="'Editar'"></a></td>
-					<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${arma.id}" th:text="'Eliminar'" onclick="return confirm('Estás seguro que quieres eliminar?');"></a></td>
+					<td class="detalles"></td>
+					<td>
+						<a class="btn btn-primary" th:href="@{/armas/editar/} + ${arma.id}" th:text="'Editar'"></a>
+					</td>
+					<td>
+						<a class="btn btn-danger" th:href="@{/eliminar/} + ${arma.id}" th:text="'Eliminar'"
+							onclick="return confirm('Estás seguro que quieres eliminar?');"></a>
+					</td>
 				</tr>
 			</tbody>
-
 		</table>
 	</div>
+	<script>
+		$(document).ready(function () {
+			$('.nombre-arma').click(function () {
+				var id = $(this).parent().data('id');
+				$.ajax({
+					url: '/armas/detalles/' + id,
+					success: function (data) {
+						var detalles = $('.detalles', '[data-id="' + id + '"]');
+						detalles.html('<p>' + data.descripcion + '</p><img src="' + data.imagen + '">');
+					}
+				});
+			});
+		});
+	</script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
 </html>

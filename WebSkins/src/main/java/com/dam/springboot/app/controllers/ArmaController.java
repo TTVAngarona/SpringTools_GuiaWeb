@@ -1,6 +1,7 @@
 package com.dam.springboot.app.controllers;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -39,7 +40,7 @@ public class ArmaController {
 	}
 	
 	@PostMapping(value = "/armas/guardar")
-	public String guardarCurso(@Valid Arma arma, BindingResult result, Model model, SessionStatus status) {
+	public String guardarArma(@Valid Arma arma, BindingResult result, Model model, SessionStatus status) {
 		status.setComplete();
 		armaDao.save(arma);
 		return "redirect:/armas";
@@ -66,6 +67,17 @@ public class ArmaController {
 			armaDao.delete(id);
 		}
 		return "redirect:/armas";
+	}
+	
+	@GetMapping("/armas/detalles/{id}")
+	public String mostrarDetalleArma(@PathVariable Long id, Model model) {
+	    Optional<Arma> arma = Optional.of(armaDao.findOne(id));
+	    if (arma.isPresent()) {
+	        model.addAttribute("arma", arma.get());
+	        return "detalles";
+	    } else {
+	        return "redirect:/armas";
+	    }
 	}
 	
 	
