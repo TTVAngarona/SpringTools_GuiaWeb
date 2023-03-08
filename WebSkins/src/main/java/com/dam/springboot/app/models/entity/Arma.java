@@ -19,18 +19,45 @@ public class Arma implements Serializable{
 	@NotEmpty
 	private String nombre_Skin;
 	private Float precio;
+	private String coleccion;
+	private Float desgaste;
+	private String imagen;
 	
-	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, @NotEmpty Float precio) {
+	
+	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, Float precio, String coleccion, Float desgaste, String imagen) {
 		super();
 		this.id = id;
 		this.nombre_Arma = nombre_Arma;
 		this.nombre_Skin = nombre_Skin;
 		this.precio = precio;
+		this.coleccion = coleccion;
+		this.desgaste = desgaste;
+		this.imagen = imagen;
 	}
 	public Arma() {
 		
 	}
 	
+	
+	
+	public Float getDesgaste() {
+		return desgaste;
+	}
+	public void setDesgaste(Float desgaste) {
+		this.desgaste = desgaste;
+	}
+	public String getColeccion() {
+		return coleccion;
+	}
+	public void setColeccion(String coleccion) {
+		this.coleccion = coleccion;
+	}
+	public String getImagen() {
+		return imagen;
+	}
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
+	}
 	public Long getId() {
 		return id;
 	}

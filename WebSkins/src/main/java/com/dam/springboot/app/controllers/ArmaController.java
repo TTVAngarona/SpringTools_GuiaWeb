@@ -1,5 +1,9 @@
 package com.dam.springboot.app.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,19 +16,29 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dam.springboot.app.models.dao.IArmaDao;
 import com.dam.springboot.app.models.entity.Arma;
+
 
 @Controller
 @SessionAttributes("arma")
 public class ArmaController {
 	@Autowired
-	private IArmaDao armaDao;
+	private IArmaDao armaDao;	
 	
-	@GetMapping(value="/armas")
+	@GetMapping(value = "/")
+	public String inicio(Model model) {
+		model.addAttribute("titulo", "Armitas");
+		model.addAttribute("armas", armaDao.findAll());
+		return "home";
+	}
+	
+	@GetMapping(value = "/armas")
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de armas");
 		model.addAttribute("armas", armaDao.findAll());
@@ -33,14 +47,31 @@ public class ArmaController {
 	
 	@GetMapping(value = "/armas/crear")
 	public String crear(Map<String, Object> model) {
-		Arma arma = new Arma();
 		model.put("titulo", "Insertar un Arma");
 		model.put("arma", new Arma());
 		return "form";
 	}
 	
 	@PostMapping(value = "/armas/guardar")
-	public String guardarArma(@Valid Arma arma, BindingResult result, Model model, SessionStatus status) {
+	public String guardarArma(@Valid Arma arma, BindingResult result, Model model, SessionStatus status, @RequestParam("file") MultipartFile imagen) {
+		if(!imagen.isEmpty()) {
+			Path directorioImagen = Paths.get("src//main//resources//static//img");
+			String rutaAbsoluta = directorioImagen.toFile().getAbsolutePath();
+			String nombreImagen = arma.getNombre_Arma() + "-" + arma.getNombre_Skin() + ".png";
+			try {
+				byte[] bytesImg = imagen.getBytes();
+				Path rutaCompleta = Paths.get(rutaAbsoluta + "//" + nombreImagen);
+				if(!Files.exists(rutaCompleta)) {
+			        Files.write(rutaCompleta, bytesImg);
+			    }
+				
+				arma.setImagen(nombreImagen);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		status.setComplete();
 		armaDao.save(arma);
 		return "redirect:/armas";
@@ -58,7 +89,7 @@ public class ArmaController {
 		}
 		model.put("arma", arma);
 		model.put("titulo", "Editar datos del arma");
-		return "form";
+		return "form_edit";
 	}
 	@GetMapping(value="/eliminar/{id}")
 	public String eliminar(@PathVariable(value="id") Long id) {
@@ -79,6 +110,8 @@ public class ArmaController {
 	        return "redirect:/armas";
 	    }
 	}
+	
+	
 	
 	
 }
