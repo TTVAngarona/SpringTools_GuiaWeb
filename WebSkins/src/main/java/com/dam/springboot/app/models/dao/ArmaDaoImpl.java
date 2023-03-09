@@ -61,8 +61,7 @@ public class ArmaDaoImpl implements ArmaRepository {
 
 	@Override
 	public Arma getOne(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.find(Arma.class, id);
 	}
 
 	@Override

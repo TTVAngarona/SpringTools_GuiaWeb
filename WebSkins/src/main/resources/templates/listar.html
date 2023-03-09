@@ -3,49 +3,96 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title th:text="${titulo}">Skins, Skins y más Skins</title>
+	<title>Skins, Skins y más Skins</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		.modal {
+			display: none;
+			position: fixed;
+			z-index: 1;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.6);
+		}
+	</style>
 </head>
 
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" th:href="@{/}"> Inicio</a></li>
-				<li class="nav-item"><a class="nav-link" th:href="@{/armas/crear}">Insertar un arma</a></li>
+	<nav class="navbar navbar-expand-lg navbar-dark">
+		<div style=" background-color: #300047; border-left: 2px;" class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ">
+				<li class="nav-item border border-dark"><a style="color: white; ;" class="nav-link" th:href="@{/}">
+						Inicio</a></li>
+				<li class="nav-item border border-dark"><a style="color: white; " class="nav-link"
+						th:href="@{/armas/crear}">Insertar un arma</a></li>
 			</ul>
 		</div>
 	</nav>
 
 	<div class="container mt-5">
-		<h1 class="text-secondary border-bottom pb-2 mb-4" th:text="${titulo}"></h1>
-		<table class="table table-striped">
-			<thead class="bg-dark text-white">
+		<center>
+			<h1 class="text-ligth font-weight-bold mb-4" th:text="${titulo}"></h1>
+		</center>
+		<table class="table table-striped text-ligth">
+			<thead class="text-ligth">
 				<tr>
-					<th>Nombre del arma</th>
-					<th>Nombre de la skin</th>
-					<th>Precio de la skin</th>
-					<th>Editar</th>
-					<th>Eliminar</th>
+					<th style="color: white; background-color: #300047; border-color: black; border-width: 2px;">Nombre
+						del arma</th>
+					<th style="color: white; background-color: #300047; border-color: black; border-width: 2px;">Nombre
+						de la skin</th>
+					<th style="color: white; background-color: #300047; border-color: black; border-width: 2px;">Precio
+						de la skin</th>
+					<th style="color: white; background-color: #300047; border-color: black; border-width: 2px;">Editar
+					</th>
+					<th style="color: white; background-color: #300047; border-color: black; border-width: 2px;">
+						Eliminar</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="arma: ${armas}">
-					<td><a th:href="@{/armas/detalles/{id}(id=${arma.id})}" th:text="${arma.nombre_Arma}"></a></td>
-					<td th:text="${arma.nombre_Skin}"></td>
-					<td th:text="${arma.precio} + '€'"></td>
-					<td>
-						<a class="btn btn-primary" th:href="@{/armas/editar/} + ${arma.id}" th:text="'Editar'"></a>
+					<td style="background-color: #55017d; border-color: black; border-width: 2px;"><a
+							style="color: #f587d6;" th:href="@{/armas/detalles/{id}(id=${arma.id})}"
+							th:text="${arma.nombre_Arma}"></a></td>
+					<td style="color: #f587d6; background-color: #55017d; border-color: black; border-width: 2px;"
+						th:text="${arma.nombre_Skin}"></td>
+					<td style="color: #f587d6; background-color: #55017d; border-color: black; border-width: 2px;"
+						th:text="${arma.precio} + '€'"></td>
+					<td style="color: #f587d6; background-color: #9222c7; border-color: black; border-width: 2px;">
+						<center><a style="background-color: blueviolet; border-color: black; border-width: 3px;"
+								class="btn btn-primary" th:href="@{/armas/editar/} + ${arma.id}" th:text="'Editar'" />
+						</center>
 					</td>
-					<td>
-						<a class="btn btn-danger" th:href="@{/eliminar/} + ${arma.id}" th:text="'Eliminar'"
-							onclick="return confirm('Estás seguro que quieres eliminar?');"></a>
+					<td style="background-color: #c7329d; border-color: black; border-width: 2px;">
+						<a style="background-color: mediumvioletred; border-color: black; border-width: 3px;"
+							class="btn btn-danger" th:href="@{/eliminar/} + ${arma.id}" th:text="'Eliminar'"
+							onclick="return confirmDelete(event);">
+						</a>
+						<!--	<center><a style="background-color: mediumvioletred; border-color: black; border-width: 3px;"
+								class="btn btn-danger" th:href="@{/eliminar/} + ${arma.id}" th:text="'Eliminar'"
+								onclick="return confirm('Estás seguro que quieres eliminar?');" /></center> -->
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		
+
 	</div>
+
+
+	<div style="text-align-last: center;">
+		<th:block th:if="${armas.number > 0}">
+			<a style="background-color: violet; border-color: black; border-width: 3px;" class="btn btn-warning "
+				th:href="@{/armas(page=__${armas.number - 1}__) }">&laquo; Anterior</a>
+		</th:block>
+		<th:block th:if="${armas.hasNext()}">
+			<a style="background-color: violet; border-color: black; border-width: 3px;" class="btn btn-warning"
+				th:href="@{/armas(page=__${armas.number + 1}__) }">Siguiente &raquo;</a>
+		</th:block>
+	</div>
+
+
+
 	<script>
 		$(document).ready(function () {
 			$('.nombre-arma').click(function () {
@@ -59,6 +106,14 @@
 				});
 			});
 		});
+	</script>
+	<script>
+		function confirmDelete(event) {
+			event.preventDefault(); // Prevents the link from being followed immediately
+			if (confirm("¿Estás seguro que quieres eliminar?")) {
+				window.location.href = event.target.href; // Follows the link if user confirms
+			}
+		}
 	</script>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
