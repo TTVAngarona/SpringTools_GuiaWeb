@@ -1,6 +1,7 @@
 package com.dam.springboot.app.models.dao;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -21,23 +22,12 @@ import com.dam.springboot.app.repository.ArmaRepository;
 @Repository
 @Primary
 public class ArmaDaoImpl implements ArmaRepository {
-	
+
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@Autowired
 	private ArmaRepository armaRepo;
-	
-	@Override
-	public List<Arma> findAll(Sort sort) {
-		return em.createQuery("from Arma").getResultList();
-	}
-
-	@Override
-	public List<Arma> findAllById(Iterable<Long> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public <S extends Arma> List<S> saveAll(Iterable<S> entities) {
@@ -48,7 +38,7 @@ public class ArmaDaoImpl implements ArmaRepository {
 	@Override
 	public void flush() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -60,13 +50,13 @@ public class ArmaDaoImpl implements ArmaRepository {
 	@Override
 	public void deleteInBatch(Iterable<Arma> entities) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteAllInBatch() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -88,51 +78,37 @@ public class ArmaDaoImpl implements ArmaRepository {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public Page<Arma> findAll(Pageable pageable) {
-		return armaRepo.findAll(pageable);
-	}
-
-	@Override
-	public Optional<Arma> findById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
 	public boolean existsById(Long id) {
-		// TODO Auto-generated method stub
-		return false;
+		return Objects.equals(em.find(Arma.class, id).getId(), id);
 	}
 
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (long) em.createQuery("select count(a) from Arma a").getSingleResult();
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
-		// TODO Auto-generated method stub
-		
+		em.remove(em.find(Arma.class, id));
 	}
 
 	@Override
 	public void delete(Arma entity) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteAll(Iterable<? extends Arma> entities) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteAll() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -161,14 +137,36 @@ public class ArmaDaoImpl implements ArmaRepository {
 
 	@Override
 	public List<Arma> findAll() {
+		return em.createQuery("from Arma").getResultList();
+	}
+
+	@Override
+	public List<Arma> findAll(Sort sort) {
+		return em.createQuery("from Arma").getResultList();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<Arma> findAll(Pageable pageable) {
+		return armaRepo.findAll(pageable);
+	}
+
+	@Override
+	public Optional<Arma> findById(Long id) {
+		Arma a = em.find(Arma.class, id);
+		return Optional.ofNullable(a);
+	}
+
+	@Override
+	public List<Arma> findAllById(Iterable<Long> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public <S extends Arma> S save(S entity) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.merge(entity);
 	}
 
 }

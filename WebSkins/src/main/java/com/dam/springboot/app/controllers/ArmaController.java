@@ -39,12 +39,7 @@ public class ArmaController {
 		return "home";
 	}
 
-/*	@GetMapping(value = "/armas")
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
-		model.addAttribute("titulo", "Listado de armas");
-		model.addAttribute("armas", armaDao.findAll());
-		return "listar";
-	}*/
+
 	@GetMapping(value = "/armas")
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 		model.addAttribute("titulo", "Listado de armas");
