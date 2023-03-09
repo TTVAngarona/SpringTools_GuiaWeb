@@ -16,25 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dam.springboot.app.models.entity.Arma;
 
 @Repository
-public class ArmaDaoImpl implements IArmaDao{
+public class ArmaDaoImpl implements IArmaDao {
 
 	@PersistenceContext
 	private EntityManager em;
-	
+
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
-	public Page<Arma> findAll(Pageable pageable) {
-		 Query queryCount = em.createQuery("SELECT COUNT(a) FROM Arma a");
-		    Long countResult = (Long) queryCount.getSingleResult();
-		    System.out.println(countResult);
-
-		    TypedQuery<Arma> query = em.createQuery("FROM Arma ORDER BY id ASC", Arma.class)
-		            .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
-		            .setMaxResults(pageable.getPageSize());
-
-		    List<Arma> armas = query.getResultList();
-		    return new PageImpl<>(armas, pageable, countResult);
+	public List<Arma> findAll() {
+		// TODO Auto-generated method stub
+		return em.createQuery("from Arma").getResultList();
 	}
 
 	@Override
@@ -46,9 +38,9 @@ public class ArmaDaoImpl implements IArmaDao{
 		} else {
 			em.persist(arma);
 		}
-		
+
 	}
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public Arma findOne(Long id) {

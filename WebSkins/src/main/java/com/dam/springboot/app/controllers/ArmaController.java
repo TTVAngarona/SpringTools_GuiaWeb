@@ -34,34 +34,18 @@ public class ArmaController {
 	@Autowired
 	private IArmaDao armaDao;
 
-	/*
-	 * @GetMapping(value = "/") public String inicio(Model model) {
-	 * model.addAttribute("titulo", "Armitas"); model.addAttribute("armas",
-	 * armaDao.findAll()); return "home"; }
-	 */
+	@GetMapping(value = "/")
+	public String inicio(Model model) {
+		model.addAttribute("titulo", "Armitas");
+		model.addAttribute("armas", armaDao.findAll());
+		return "home";
+	}
 
-	/*
-	 * @GetMapping(value = "/armas") public String listar(@RequestParam(name =
-	 * "page", defaultValue = "0") int page, Model model) {
-	 * model.addAttribute("titulo", "Listado de armas"); model.addAttribute("armas",
-	 * armaDao.findAll()); return "listar"; }
-	 */
 	@GetMapping(value = "/armas")
-	public String listar(@RequestParam(name = "page", defaultValue = "0") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size, Model model) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-		Page<Arma> pageArmas = armaDao.findAll(pageable);
-		
-		System.out.println(pageArmas);
-		if (pageArmas instanceof Page) {
-			model.addAttribute("armas", pageArmas);
-			model.addAttribute("totalPages", pageArmas.getTotalPages());
-			model.addAttribute("currentPage", pageArmas.getNumber());
-			return "listar.html";
-		} else {
-			return "Hay un error";
-		}
-		
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+		model.addAttribute("titulo", "Listado de armas");
+		model.addAttribute("armas", armaDao.findAll());
+		return "listar";
 	}
 
 	@GetMapping(value = "/armas/crear")
