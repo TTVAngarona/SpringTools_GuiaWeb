@@ -10,10 +10,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,29 +22,35 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dam.springboot.app.models.dao.IArmaDao;
 import com.dam.springboot.app.models.entity.Arma;
+import com.dam.springboot.app.repository.ArmaRepository;
 
 @Controller
 @SessionAttributes("arma")
 public class ArmaController {
+	
 	@Autowired
-	private IArmaDao armaDao;
+	private ArmaRepository armaRepo;
 
 	@GetMapping(value = "/")
 	public String inicio(Model model) {
 		model.addAttribute("titulo", "Armitas");
-		model.addAttribute("armas", armaDao.findAll());
+		model.addAttribute("armas", armaRepo.findAll());
 		return "home";
 	}
 
-	@GetMapping(value = "/armas")
+/*	@GetMapping(value = "/armas")
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
 		model.addAttribute("titulo", "Listado de armas");
 		model.addAttribute("armas", armaDao.findAll());
 		return "listar";
+	}*/
+	@GetMapping(value = "/armas")
+	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model) {
+		model.addAttribute("titulo", "Listado de armas");
+		model.addAttribute("armas", armaRepo.findAll(PageRequest.of(page, 10)));
+		return "listar";
 	}
-
 	@GetMapping(value = "/armas/crear")
 	public String crear(Map<String, Object> model) {
 		model.put("titulo", "Insertar un Arma");
@@ -77,17 +80,17 @@ public class ArmaController {
 			}
 		}
 		status.setComplete();
-		armaDao.save(arma);
+		armaRepo.save(arma);
 		return "redirect:/armas";
 	}
 
 	@GetMapping(value = "/armas/editar/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model) {
 
-		Arma arma = null;
+		Optional<Arma> arma = null;
 
 		if (id > 0) {
-			arma = armaDao.findOne(id);
+			arma = armaRepo.findById(id);
 		} else {
 			return "redirect:/armas";
 		}
@@ -100,14 +103,14 @@ public class ArmaController {
 	public String eliminar(@PathVariable(value = "id") Long id) {
 
 		if (id > 0) {
-			armaDao.delete(id);
+			armaRepo.deleteById(id);
 		}
 		return "redirect:/armas";
 	}
 
 	@GetMapping("/armas/detalles/{id}")
 	public String mostrarDetalleArma(@PathVariable Long id, Model model) {
-		Optional<Arma> arma = Optional.of(armaDao.findOne(id));
+		Optional<Arma> arma = Optional.empty();
 		if (arma.isPresent()) {
 			model.addAttribute("arma", arma.get());
 			return "detalles";
