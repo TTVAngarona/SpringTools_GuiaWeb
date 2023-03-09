@@ -1,12 +1,15 @@
 package com.dam.springboot.app.models.dao;
 
-import java.util.List;
+import java.awt.print.Pageable;
+
+import org.springframework.data.domain.Page;
 
 import com.dam.springboot.app.models.entity.Arma;
 
 public interface IArmaDao {
 
-	public List<Arma> findAll();
+//	public List<Arma> findAll();
+	public Page<Arma> findAll(org.springframework.data.domain.Pageable pageable);
 
 	public void save(Arma arma);
 	

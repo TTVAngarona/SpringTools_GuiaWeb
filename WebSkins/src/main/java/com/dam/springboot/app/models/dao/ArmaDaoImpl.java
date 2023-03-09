@@ -4,7 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +24,17 @@ public class ArmaDaoImpl implements IArmaDao{
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	@Override
-	public List<Arma> findAll() {
-		// TODO Auto-generated method stub
-		return em.createQuery("from Arma").getResultList();
+	public Page<Arma> findAll(Pageable pageable) {
+		 Query queryCount = em.createQuery("SELECT COUNT(a) FROM Arma a");
+		    Long countResult = (Long) queryCount.getSingleResult();
+		    System.out.println(countResult);
+
+		    TypedQuery<Arma> query = em.createQuery("FROM Arma ORDER BY id ASC", Arma.class)
+		            .setFirstResult(pageable.getPageNumber() * pageable.getPageSize())
+		            .setMaxResults(pageable.getPageSize());
+
+		    List<Arma> armas = query.getResultList();
+		    return new PageImpl<>(armas, pageable, countResult);
 	}
 
 	@Override
