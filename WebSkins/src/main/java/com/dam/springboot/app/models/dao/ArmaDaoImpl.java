@@ -153,7 +153,7 @@ public class ArmaDaoImpl implements ArmaRepository {
 	@Override
 	public Optional<Arma> findById(Long id) {
 		Arma a = em.find(Arma.class, id);
-		return Optional.ofNullable(a);
+		return Optional.of(a);
 	}
 
 	@Override

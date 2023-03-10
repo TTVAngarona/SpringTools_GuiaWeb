@@ -22,9 +22,10 @@ public class Arma implements Serializable{
 	private String coleccion;
 	private Float desgaste;
 	private String imagen;
+	private String tipo;
 	
 	
-	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, Float precio, String coleccion, Float desgaste, String imagen) {
+	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, Float precio, String coleccion, Float desgaste, String imagen, String tipo) {
 		super();
 		this.id = id;
 		this.nombre_Arma = nombre_Arma;
@@ -33,6 +34,7 @@ public class Arma implements Serializable{
 		this.coleccion = coleccion;
 		this.desgaste = desgaste;
 		this.imagen = imagen;
+		this.tipo = tipo;
 	}
 	public Arma() {
 		
@@ -40,6 +42,12 @@ public class Arma implements Serializable{
 	
 	
 	
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 	public Float getDesgaste() {
 		return desgaste;
 	}

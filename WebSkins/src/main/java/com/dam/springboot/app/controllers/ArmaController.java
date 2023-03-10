@@ -46,7 +46,6 @@ public class ArmaController {
 		model.addAttribute("armas", armaRepo.findAll(PageRequest.of(page, 10)));
 		return "listar";
 	}
-	
 	@GetMapping(value = "/armas/crear")
 	public String crear(Map<String, Object> model) {
 		model.put("titulo", "Insertar un Arma");
@@ -75,7 +74,7 @@ public class ArmaController {
 				e.printStackTrace();
 			}
 		}
-		//status.setComplete();
+		status.setComplete();
 		armaRepo.save(arma);
 		return "redirect:/armas";
 	}
@@ -105,9 +104,10 @@ public class ArmaController {
 
 	@GetMapping("/armas/detalles/{id}")
 	public String mostrarDetalleArma(@PathVariable Long id, Model model) {
-		Optional<Arma> arma = Optional.empty();
-		if (!arma.isPresent()) {
-			model.addAttribute("arma", armaRepo.getOne(id));
+		Optional<Arma> arma = armaRepo.findById(id);
+		System.out.println(arma);
+		if (arma.isPresent()) {
+			model.addAttribute("arma", arma.get());
 			return "detalles";
 		} else {
 			return "redirect:/armas";
