@@ -1,0 +1,33 @@
+OSKAR NUNCA FALTA A CLASE +1 PUNTO
+
+CRUD:
+Estan creados e implementados todos los metodos para crear,leer, eliminar y editar, 
+
+PAGINACIÓN:
+No te preocupes si no ves la paginación, puede ser que no hayan suficientes armas. Cada diez armas se crea una pagina nueva.
+
+Relaciones:
+Aun me falta.
+
+BASE DE DATOS:
+Te dejo un documento llamado importar.sql.
+Se ejecuta automaticamente una vez que inicies el programa como SpringBoot.
+
+SEGURIDAD:
+No he creado una base de datos para los usuarios, es decir entras con la contraseña que se te muestra en la consola por defecto.
+
+Nombre del usuario = user
+Contraseña = "EN LA CONSOLA" (ej. e2cedcd2-8b4a-4381-b0c1-1316620ddaa3)
+
+
+OTRO ASPECTO:
+He usado javascript para que salga mas bonito el elminar de lo que ya estaba antes y para mostrar los detalles de las armas.
+
+DATOS A TENER EN CUENTA:
+Cuando subas un arma a la base de datos, el nombre de la imagen se guarda automaticamente pero la imagen en el directorio /src/main/resources/static/img NO!!!!!!!!
+Dos opciones:
+1. Cada vez que insertes una imagen vayas a la carpeta "img" y pulses F5.
+2. En la barra de herramientas de arriba tendras que presionar "Window" -> "Preferences" -> 
+
+
+
