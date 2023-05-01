@@ -18,14 +18,16 @@ public class Arma implements Serializable{
 	private String nombre_Arma;
 	@NotEmpty
 	private String nombre_Skin;
+	@NotEmpty
 	private Float precio;
 	private String coleccion;
 	private Float desgaste;
+	@NotEmpty
 	private String imagen;
 	private String tipo;
 	
 	
-	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, Float precio, String coleccion, Float desgaste, String imagen, String tipo) {
+	public Arma(Long id, @NotEmpty String nombre_Arma, @NotEmpty String nombre_Skin, @NotEmpty Float precio, String coleccion, Float desgaste,@NotEmpty String imagen, String tipo) {
 		super();
 		this.id = id;
 		this.nombre_Arma = nombre_Arma;
